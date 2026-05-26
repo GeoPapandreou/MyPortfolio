@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #f3f6ff;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(132, 74, 255, 0.16), transparent 24%),
+      radial-gradient(circle at 76% 4%, rgba(255, 82, 158, 0.12), transparent 26%),
+      radial-gradient(circle at 52% 72%, rgba(34, 211, 238, 0.09), transparent 30%),
+      linear-gradient(180deg, #020617 0%, #030b18 42%, #071326 100%);
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  * {
+    border-color: rgba(148, 163, 184, 0.22);
+  }
+
+  body {
+    @apply min-h-screen bg-[#020617] text-[#f3f6ff] antialiased;
+    background-attachment: fixed;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    @apply outline-none;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-[28px] border border-white/10 bg-[#050d1f]/90 shadow-card backdrop-blur;
+  }
+
+  .section-shell {
+    @apply glass-card p-6 md:p-8;
+  }
+
+  .field-label {
+    @apply mb-2 block text-sm font-medium text-white/75;
+  }
+
+  .field-input {
+    @apply w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-violet-400/70 focus:ring-2 focus:ring-violet-500/20;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-violet-500 px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.01] hover:shadow-[0_12px_40px_rgba(139,92,246,0.35)] disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .secondary-button {
+    @apply inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-medium text-white transition hover:border-violet-400/40 hover:bg-white/[0.06];
+  }
+
+  .ghost-button {
+    @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-medium text-white/70 transition hover:bg-white/[0.05] hover:text-white;
+  }
+
+  .tag-pill {
+    @apply inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-sm text-white/80;
+  }
+
+  .dark-grid-panel {
+    background:
+      linear-gradient(180deg, rgba(8, 15, 31, 0.96) 0%, rgba(5, 11, 23, 0.92) 100%),
+      radial-gradient(circle at top, rgba(139, 92, 246, 0.15), transparent 36%);
+  }
+
+  .wizard-empty-state {
+    @apply rounded-[28px] border border-dashed border-white/10 px-6 py-8 text-center text-white/55;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.035) 100%);
+  }
+
+  .wizard-empty-icon {
+    @apply mx-auto grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-violet-200;
+  }
+
+  .wizard-empty-card {
+    @apply rounded-[22px] border border-white/10 bg-white/[0.03] p-4;
+  }
+
+  .wizard-empty-line {
+    @apply h-2 rounded-full bg-white/10;
+  }
+
+  .wizard-preview-card {
+    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  }
+
+  .wizard-preview-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(167, 139, 250, 0.34);
+    background: rgba(255,255,255,0.05);
+  }
+}

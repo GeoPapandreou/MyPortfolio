@@ -1,0 +1,10 @@
+MyPortfolioUI/node_modules/
+MyPortfolioUI/dist/
+MyPortfolioAPI/bin/
+MyPortfolioAPI/obj/
+MyPortfolioAPI/build-temp/
+MyPortfolioAPI/obj-temp/
+MyPortfolioAPI/GeneratedArtifacts/
+MyPortfolioAPI/appsettings.Development.json
+*.user
+*.suo
