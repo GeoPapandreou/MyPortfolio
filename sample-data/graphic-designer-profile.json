@@ -1,0 +1,58 @@
+{
+  "theme": "Creative",
+  "personalInfo": {
+    "fullName": "Maya Laurent",
+    "profession": "Brand Designer",
+    "bio": "Brand designer with eight years of experience shaping visual identities for hospitality, beauty and lifestyle businesses. I blend strategy, typography and illustration to create work that feels memorable and commercially strong.",
+    "photoUrl": "",
+    "location": "Barcelona, Spain"
+  },
+  "experiences": [
+    {
+      "organisation": "Studio Clementine",
+      "role": "Senior Brand Designer",
+      "startDate": "2022-02-01",
+      "endDate": "",
+      "isCurrent": true,
+      "bullets": [
+        "Led identity projects for boutique hotels, cafes and consumer brands across Europe.",
+        "Presented visual directions to clients and translated feedback into polished brand systems.",
+        "Mentored two junior designers and introduced a smoother review process."
+      ]
+    },
+    {
+      "organisation": "North Harbour Creative",
+      "role": "Brand Designer",
+      "startDate": "2018-06-01",
+      "endDate": "2022-01-31",
+      "isCurrent": false,
+      "bullets": [
+        "Created campaign visuals, packaging concepts and social launch assets.",
+        "Worked closely with copywriters, photographers and print suppliers.",
+        "Helped redesign the studio portfolio presentation for new client pitches."
+      ]
+    }
+  ],
+  "workSamples": [
+    {
+      "title": "Rivage Hotel Identity Refresh",
+      "description": "Refreshed the visual identity for a coastal boutique hotel, including logo refinements, signage guidance, menus, stationery and digital launch assets.",
+      "tools": ["Typography", "Illustration", "Art direction"],
+      "liveUrl": "https://example.com/rivage"
+    },
+    {
+      "title": "Atelier Bloom Packaging Range",
+      "description": "Created a new packaging look for a natural skincare line with clearer shelf presence and a softer, more premium tone.",
+      "tools": ["Packaging design", "Colour systems", "Print coordination"],
+      "liveUrl": "https://example.com/atelier-bloom"
+    }
+  ],
+  "contactInfo": {
+    "email": "maya@example.com",
+    "phone": "+34 600 111 222",
+    "linkedIn": "https://www.linkedin.com/in/mayalaurent",
+    "instagram": "https://www.instagram.com/mayalaurentstudio",
+    "facebook": "",
+    "gitHub": "https://github.com/mayalaurent"
+  }
+}
