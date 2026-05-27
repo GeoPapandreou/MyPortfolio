@@ -22,6 +22,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<StartupHealthState>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPortfolioVersionRepository, PortfolioVersionRepository>();
+builder.Services.AddScoped<IPortfolioArtifactStorage, PortfolioArtifactStorage>();
+builder.Services.AddScoped<IPortfolioFrontendPromptBuilder, PortfolioFrontendPromptBuilder>();
+builder.Services.AddScoped<IGeneratedFrontendPackageValidator, GeneratedFrontendPackageValidator>();
+builder.Services.AddScoped<IGeneratedPortfolioReadmeBuilder, GeneratedPortfolioReadmeBuilder>();
+builder.Services.AddScoped<IAuthApplicationService, AuthApplicationService>();
+builder.Services.AddScoped<IAccountApplicationService, AccountApplicationService>();
+builder.Services.AddScoped<IPortfolioApplicationService, PortfolioApplicationService>();
+builder.Services.AddScoped<IPortfolioPackageApplicationService, PortfolioPackageApplicationService>();
 builder.Services.AddScoped<IGeminiService, GeminiService>();
 builder.Services.AddScoped<IZipService, ZipService>();
 builder.Services.AddScoped<IPortfolioGenerationService, PortfolioGenerationService>();

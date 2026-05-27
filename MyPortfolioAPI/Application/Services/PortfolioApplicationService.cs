@@ -1,56 +1,48 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyPortfolioAPI.Data;
 using MyPortfolioAPI.DTOs;
+using MyPortfolioAPI.Exceptions;
 using MyPortfolioAPI.Extensions;
-using MyPortfolioAPI.Services;
 using MyPortfolioAPI.Utilities;
 
-namespace MyPortfolioAPI.Controllers;
+namespace MyPortfolioAPI.Services;
 
-[ApiController]
-[Authorize]
-[Route("api/portfolio")]
-public sealed class PortfolioController : ControllerBase
+public interface IPortfolioApplicationService
 {
-    private readonly AppDbContext _dbContext;
+    Task<UserProfileDto> GetAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    Task<UserProfileDto> SaveAsync(Guid userId, UserProfileDto request, CancellationToken cancellationToken = default);
+}
+
+public sealed class PortfolioApplicationService : IPortfolioApplicationService
+{
+    private readonly IUserRepository _userRepository;
     private readonly IPortfolioPersistenceService _portfolioPersistenceService;
 
-    public PortfolioController(AppDbContext dbContext, IPortfolioPersistenceService portfolioPersistenceService)
+    public PortfolioApplicationService(IUserRepository userRepository, IPortfolioPersistenceService portfolioPersistenceService)
     {
-        _dbContext = dbContext;
+        _userRepository = userRepository;
         _portfolioPersistenceService = portfolioPersistenceService;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<UserProfileDto>> GetAsync(CancellationToken cancellationToken)
+    public async Task<UserProfileDto> GetAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var userId = User.GetUserId();
         var portfolio = await _portfolioPersistenceService.LoadAsync(userId, cancellationToken);
-
-        // When a portfolio exists the User is loaded via the navigation property
-        // included by LoadAsync, avoiding a second round-trip.
-        // For new accounts that have no portfolio yet we fall back to a direct query.
         var user = portfolio?.User
-            ?? await _dbContext.Users.FirstOrDefaultAsync(item => item.Id == userId, cancellationToken);
+            ?? await _userRepository.GetByIdAsync(userId, cancellationToken);
 
         if (user is null)
         {
-            return NotFound(new { message = "Your account could not be found." });
+            throw new ClientSafeException("Your account could not be found.", StatusCodes.Status404NotFound);
         }
 
-        return Ok(ApplyAccountDefaults(portfolio.ToDto(), user));
+        return ApplyAccountDefaults(portfolio.ToDto(), user);
     }
 
-    [HttpPut]
-    public async Task<ActionResult<UserProfileDto>> PutAsync(UserProfileDto request, CancellationToken cancellationToken)
+    public async Task<UserProfileDto> SaveAsync(Guid userId, UserProfileDto request, CancellationToken cancellationToken = default)
     {
-        var userId = User.GetUserId();
         var profileToPersist = UserProfileSanitizer.CreatePersistenceSafeCopy(request);
         await _portfolioPersistenceService.SaveAsync(userId, profileToPersist, cancellationToken);
         var refreshed = await _portfolioPersistenceService.LoadAsync(userId, cancellationToken);
-        return Ok(refreshed.ToDto());
+        return refreshed.ToDto();
     }
 
     private static UserProfileDto ApplyAccountDefaults(UserProfileDto profile, Models.User user)

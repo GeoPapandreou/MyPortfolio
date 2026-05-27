@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyPortfolioAPI.Data;
+using MyPortfolioAPI.Data.Queries;
 using MyPortfolioAPI.DTOs;
 using MyPortfolioAPI.Exceptions;
 using MyPortfolioAPI.Models;
@@ -25,14 +26,7 @@ public sealed class PortfolioPersistenceService : IPortfolioPersistenceService
     public async Task<Portfolio?> LoadAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Portfolios
-            .Include(portfolio => portfolio.User)
-            .Include(portfolio => portfolio.PersonalInfo)
-            .Include(portfolio => portfolio.ContactInfo)
-            .Include(portfolio => portfolio.Experiences)
-                .ThenInclude(experience => experience.Bullets)
-            .Include(portfolio => portfolio.WorkSamples)
-                .ThenInclude(sample => sample.Tools)
-            .Include(portfolio => portfolio.Versions)
+            .IncludeAggregate()
             .FirstOrDefaultAsync(portfolio => portfolio.UserId == userId, cancellationToken);
     }
 
@@ -43,9 +37,7 @@ public sealed class PortfolioPersistenceService : IPortfolioPersistenceService
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 
         var portfolio = await _dbContext.Portfolios
-            .Include(item => item.PersonalInfo)
-            .Include(item => item.ContactInfo)
-            .Include(item => item.Versions)
+            .IncludePersistenceState()
             .FirstOrDefaultAsync(item => item.UserId == userId, cancellationToken);
 
         if (portfolio is null)
