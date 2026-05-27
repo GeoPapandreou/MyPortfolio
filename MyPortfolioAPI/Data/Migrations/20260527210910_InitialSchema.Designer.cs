@@ -12,7 +12,7 @@ using MyPortfolioAPI.Data;
 namespace MyPortfolioAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260511154215_InitialSchema")]
+    [Migration("20260527210910_InitialSchema")]
     partial class InitialSchema
     {
         /// <inheritdoc />
@@ -36,6 +36,21 @@ namespace MyPortfolioAPI.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Facebook")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("GitHub")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("Instagram")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
                     b.Property<string>("LinkedIn")
                         .IsRequired()
                         .HasMaxLength(512)
@@ -49,77 +64,12 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Website")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PortfolioId")
                         .IsUnique();
 
                     b.ToTable("ContactInfos");
-                });
-
-            modelBuilder.Entity("MyPortfolioAPI.Models.ContactLink", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContactInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactInfoId");
-
-                    b.ToTable("ContactLinks");
-                });
-
-            modelBuilder.Entity("MyPortfolioAPI.Models.Education", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Field")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
-
-                    b.Property<string>("Institution")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
-
-                    b.Property<Guid>("PortfolioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Qualification")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
-
-                    b.Property<int?>("YearCompleted")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("EducationItems");
                 });
 
             modelBuilder.Entity("MyPortfolioAPI.Models.Experience", b =>
@@ -225,9 +175,6 @@ namespace MyPortfolioAPI.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("GeneratedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -256,6 +203,9 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("VersionNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("ZipUrl")
                         .IsRequired()
                         .HasMaxLength(512)
@@ -266,27 +216,6 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.HasIndex("PortfolioId");
 
                     b.ToTable("PortfolioVersions");
-                });
-
-            modelBuilder.Entity("MyPortfolioAPI.Models.Skill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<Guid>("PortfolioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PortfolioId");
-
-                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("MyPortfolioAPI.Models.User", b =>
@@ -303,10 +232,30 @@ namespace MyPortfolioAPI.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Profession")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.HasKey("Id");
 
@@ -378,28 +327,6 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.Navigation("Portfolio");
                 });
 
-            modelBuilder.Entity("MyPortfolioAPI.Models.ContactLink", b =>
-                {
-                    b.HasOne("MyPortfolioAPI.Models.ContactInfo", "ContactInfo")
-                        .WithMany("Links")
-                        .HasForeignKey("ContactInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContactInfo");
-                });
-
-            modelBuilder.Entity("MyPortfolioAPI.Models.Education", b =>
-                {
-                    b.HasOne("MyPortfolioAPI.Models.Portfolio", "Portfolio")
-                        .WithMany("EducationItems")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
             modelBuilder.Entity("MyPortfolioAPI.Models.Experience", b =>
                 {
                     b.HasOne("MyPortfolioAPI.Models.Portfolio", "Portfolio")
@@ -455,17 +382,6 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.Navigation("Portfolio");
                 });
 
-            modelBuilder.Entity("MyPortfolioAPI.Models.Skill", b =>
-                {
-                    b.HasOne("MyPortfolioAPI.Models.Portfolio", "Portfolio")
-                        .WithMany("Skills")
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Portfolio");
-                });
-
             modelBuilder.Entity("MyPortfolioAPI.Models.WorkSample", b =>
                 {
                     b.HasOne("MyPortfolioAPI.Models.Portfolio", "Portfolio")
@@ -488,11 +404,6 @@ namespace MyPortfolioAPI.Data.Migrations
                     b.Navigation("WorkSample");
                 });
 
-            modelBuilder.Entity("MyPortfolioAPI.Models.ContactInfo", b =>
-                {
-                    b.Navigation("Links");
-                });
-
             modelBuilder.Entity("MyPortfolioAPI.Models.Experience", b =>
                 {
                     b.Navigation("Bullets");
@@ -502,13 +413,9 @@ namespace MyPortfolioAPI.Data.Migrations
                 {
                     b.Navigation("ContactInfo");
 
-                    b.Navigation("EducationItems");
-
                     b.Navigation("Experiences");
 
                     b.Navigation("PersonalInfo");
-
-                    b.Navigation("Skills");
 
                     b.Navigation("Versions");
 

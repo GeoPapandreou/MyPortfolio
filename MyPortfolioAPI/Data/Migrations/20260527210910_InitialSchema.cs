@@ -16,6 +16,10 @@ namespace MyPortfolioAPI.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Profession = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -31,8 +35,7 @@ namespace MyPortfolioAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Theme = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Theme = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,35 +57,15 @@ namespace MyPortfolioAPI.Data.Migrations
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     LinkedIn = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    Website = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
+                    Instagram = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    Facebook = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    GitHub = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ContactInfos", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ContactInfos_Portfolios_PortfolioId",
-                        column: x => x.PortfolioId,
-                        principalTable: "Portfolios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EducationItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PortfolioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Institution = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Qualification = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Field = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    YearCompleted = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EducationItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EducationItems_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
                         principalTable: "Portfolios",
                         principalColumn: "Id",
@@ -141,6 +124,7 @@ namespace MyPortfolioAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PortfolioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VersionNumber = table.Column<int>(type: "int", nullable: false),
                     GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ZipUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
                 },
@@ -149,25 +133,6 @@ namespace MyPortfolioAPI.Data.Migrations
                     table.PrimaryKey("PK_PortfolioVersions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PortfolioVersions_Portfolios_PortfolioId",
-                        column: x => x.PortfolioId,
-                        principalTable: "Portfolios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PortfolioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Skills_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
                         principalTable: "Portfolios",
                         principalColumn: "Id",
@@ -191,26 +156,6 @@ namespace MyPortfolioAPI.Data.Migrations
                         name: "FK_WorkSamples_Portfolios_PortfolioId",
                         column: x => x.PortfolioId,
                         principalTable: "Portfolios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContactLinks",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContactInfoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Label = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContactLinks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContactLinks_ContactInfos_ContactInfoId",
-                        column: x => x.ContactInfoId,
-                        principalTable: "ContactInfos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -260,16 +205,6 @@ namespace MyPortfolioAPI.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContactLinks_ContactInfoId",
-                table: "ContactLinks",
-                column: "ContactInfoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationItems_PortfolioId",
-                table: "EducationItems",
-                column: "PortfolioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExperienceBullets_ExperienceId",
                 table: "ExperienceBullets",
                 column: "ExperienceId");
@@ -297,11 +232,6 @@ namespace MyPortfolioAPI.Data.Migrations
                 column: "PortfolioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skills_PortfolioId",
-                table: "Skills",
-                column: "PortfolioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -322,10 +252,7 @@ namespace MyPortfolioAPI.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ContactLinks");
-
-            migrationBuilder.DropTable(
-                name: "EducationItems");
+                name: "ContactInfos");
 
             migrationBuilder.DropTable(
                 name: "ExperienceBullets");
@@ -337,13 +264,7 @@ namespace MyPortfolioAPI.Data.Migrations
                 name: "PortfolioVersions");
 
             migrationBuilder.DropTable(
-                name: "Skills");
-
-            migrationBuilder.DropTable(
                 name: "WorkSampleTools");
-
-            migrationBuilder.DropTable(
-                name: "ContactInfos");
 
             migrationBuilder.DropTable(
                 name: "Experiences");
